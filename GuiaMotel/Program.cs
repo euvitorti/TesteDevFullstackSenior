@@ -1,8 +1,7 @@
 using GuiaMotel.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Services.Authentication;
+using Repository.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,27 +12,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configurar AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Configurar JWT
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
+// Registrar serviços de autenticação
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenService, TokenService>(); // Adicionar TokenService
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Registrar o CORS
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowFrontend", policy =>
+//     {
+//         policy.WithOrigins("http://localhost:3000") // Ajuste a URL de acordo com seu frontend
+//               .AllowAnyMethod()
+//               .AllowAnyHeader();
+//     });
+// });
 
 var app = builder.Build();
 
@@ -43,7 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseCors("AllowFrontend"); // Ativando o CORS
+// app.UseHttpsRedirection();
 app.UseAuthentication(); // Importante para JWT
 app.UseAuthorization();
 
