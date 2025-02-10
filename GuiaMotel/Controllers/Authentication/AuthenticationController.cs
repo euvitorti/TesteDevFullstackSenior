@@ -4,7 +4,7 @@ using Repository.Authentication;
 
 namespace Controller.Authentication
 {
-    [Route("api/[controller]")]
+    [Route("api/authentication/")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

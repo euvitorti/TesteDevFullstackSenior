@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Services.Authentication;
 using Repository.Authentication;
 using Services.Motels;
-using Services.Motel;
-using Services.SuiteType; // Certifique-se de ajustar para o namespace onde estão os serviços de Motel e SuiteType
+using Services.SuiteTypes;
+using Infra.Config; // Importar para acessar o JwtConfig
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,12 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 // Registrar serviços de autenticação
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<ITokenService, TokenService>(); // Adicionar TokenService
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+// Adicionar configuração do JWT
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddAuthorization(); // Garantir que o Authorization está registrado
 
 // Registrar os novos serviços para Motel e SuiteType
 builder.Services.AddScoped<IMotelService, MotelService>();
@@ -27,17 +32,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Registrar o CORS (se necessário)
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowFrontend", policy =>
-//     {
-//         policy.WithOrigins("http://localhost:3000") // Ajuste a URL de acordo com seu frontend
-//               .AllowAnyMethod()
-//               .AllowAnyHeader();
-//     });
-// });
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -46,10 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseCors("AllowFrontend"); // Ativando o CORS
-// app.UseHttpsRedirection();
-app.UseAuthentication(); // Importante para JWT
-app.UseAuthorization();
+app.UseAuthentication(); // Middleware de autenticação para validar o JWT
+app.UseAuthorization();  // Middleware de autorização
 
 app.MapControllers();
 app.Run();

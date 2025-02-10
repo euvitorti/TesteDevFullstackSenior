@@ -5,7 +5,7 @@ using Repository.Authentication;
 namespace GuiaMotel.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/user/")]
     public class UsersController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;

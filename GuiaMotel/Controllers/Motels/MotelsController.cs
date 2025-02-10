@@ -7,7 +7,7 @@ using Services.Motels;
 namespace Controller.Motels
 {
     [ApiController]
-    [Route("api/motels/[controller]")]
+    [Route("api/motels/")]
     [Authorize]
     public class MotelsController : ControllerBase
     {

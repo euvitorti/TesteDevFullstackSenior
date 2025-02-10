@@ -7,7 +7,7 @@ using Services.SuiteTypes;
 namespace Controller.SuiteType
 {
     [ApiController]
-    [Route("api/suites/[controller]")]
+    [Route("api/suites/")]
     [Authorize]
     public class SuiteTypesController : ControllerBase
     {
