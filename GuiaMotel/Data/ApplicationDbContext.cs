@@ -1,8 +1,8 @@
 using GuiaMotel.Model;
 using Microsoft.EntityFrameworkCore;
 using Models.Booking;
-using Models.Models;
-using Suite;
+using Models.Motels;
+using Models.SuiteType;
 
 namespace GuiaMotel.Data
 {
@@ -16,7 +16,7 @@ namespace GuiaMotel.Data
         // DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Motel> Motels { get; set; }
-        public DbSet<SuiteType> SuiteTypes { get; set; }
+        public DbSet<Suite> SuiteTypes { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
         // Relacionamentos e configurações adicionais no banco
@@ -43,7 +43,7 @@ namespace GuiaMotel.Data
                 .HasForeignKey(s => s.MotelId);
 
             // Relacionamento entre SuiteType e Reservation
-            modelBuilder.Entity<SuiteType>()
+            modelBuilder.Entity<Suite>()
                 .HasMany(s => s.Reservations)
                 .WithOne(r => r.SuiteType)
                 .HasForeignKey(r => r.SuiteTypeId);

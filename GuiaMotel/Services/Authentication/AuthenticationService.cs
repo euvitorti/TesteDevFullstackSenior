@@ -1,11 +1,7 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using DTOs.User;
 using GuiaMotel.Data;
 using GuiaMotel.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Repository.Authentication;
 
 namespace Services.Authentication

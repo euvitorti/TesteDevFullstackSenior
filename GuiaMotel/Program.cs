@@ -2,6 +2,9 @@ using GuiaMotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Services.Authentication;
 using Repository.Authentication;
+using Services.Motels;
+using Services.Motel;
+using Services.SuiteType; // Certifique-se de ajustar para o namespace onde estão os serviços de Motel e SuiteType
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +19,15 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>(); // Adicionar TokenService
 
+// Registrar os novos serviços para Motel e SuiteType
+builder.Services.AddScoped<IMotelService, MotelService>();
+builder.Services.AddScoped<ISuiteTypeService, SuiteTypeService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Registrar o CORS
+// Registrar o CORS (se necessário)
 // builder.Services.AddCors(options =>
 // {
 //     options.AddPolicy("AllowFrontend", policy =>

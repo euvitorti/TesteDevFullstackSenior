@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Models.Booking;
-using Models.Models;
+using Models.Motels;
 
-namespace Suite
+namespace Models.SuiteType
 {
-    public class SuiteType
+    public class Suite
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

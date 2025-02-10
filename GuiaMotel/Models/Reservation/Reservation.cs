@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Enums;
 using GuiaMotel.Model;
-using Models.Models;
-using Suite;
+using Models.Motels;
+using Models.SuiteType;
 
 namespace Models.Booking
 {
@@ -27,7 +27,7 @@ namespace Models.Booking
         public int SuiteTypeId { get; set; }
 
         [ForeignKey("SuiteTypeId")]
-        public SuiteType? SuiteType { get; set; }  // Propriedade do tipo SuiteType, agora pode ser null
+        public Suite? SuiteType { get; set; }  // Propriedade do tipo SuiteType, agora pode ser null
 
         // Relacionamento com o Motel
         public int MotelId { get; set; }
