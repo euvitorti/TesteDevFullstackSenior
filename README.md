@@ -66,10 +66,58 @@ O banco de dados PostgreSQL foi configurado no servidor Render. Utilizei migrati
   dotnet run
 ```
 
-7. Teste a API
-   
-- Cadastro de Usuário: Envie uma requisição POST para api/auth/register com o corpo contendo o nome, email e senha.
-- Login de Usuário: Envie uma requisição POST para api/auth/login com as credenciais. Receba o token JWT para usar nos endpoints protegidos.
+---
+
+## Teste a API
+
+1. **Cadastro de Usuário**
+
+Primeiramente, é necessário cadastrar um usuário. Esse endpoint cria o usuário e retorna uma mensagem de sucesso.
+
+```
+  POST http://localhost:5000/api/user/register
+```
+
+2. **Requisição com cURL**
+ 
+Utilize o comando curl abaixo (em uma única linha) para registrar um novo usuário. Certifique-se de enviar os campos UserName, Password e Email corretamente:
+
+```
+  curl -X POST http://localhost:5000/api/user/register -H "Content-Type: application/json" -d "{\"UserName\": \"adm\", \"Password\": \"adm\", \"Email\": \"adm@dominio.com\"}"    
+```
+
+3. **Resposta Esperada**
+
+Em caso de sucesso, a resposta deverá ser similar a:
+
+```
+  {
+    "message": "Usuário registrado com sucesso!"
+  }
+```
+
+4. **Realizar Login e Obter o Token**
+
+Para acessar os endpoints protegidos da API, é necessário realizar o login e obter um token de acesso. O login deve ser feito enviando os dados do usuário (UserName e Password) no corpo da requisição.
+
+```
+  POST http://localhost:5000/api/authentication/login
+```
+
+5. **Exemplo de Requisição (cURL)**
+
+Utilize o comando abaixo para efetuar o login. Certifique-se de substituir os valores seu_usuario e sua_senha pelos dados corretos do usuário cadastrado:
+
+```
+  curl -X POST http://localhost:5000/api/authentication/login -H "Content-Type: application/json" -d "{\"UserName\": \"seu_usuario\", \"Password\": \"sua_senha\"}"
+```
+
+**Possíveis Respostas**: Login realizado com sucesso, retornando o token de acesso:
+
+```
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBnbWFpbC5jb20iLCJuYmYiOjE3MzkyNzAyNjMsImV4cCI6MTczOTI3Mzg2MywiaWF0IjoxNzM5MjcwMjYzfQ.iKS7u0VlNl85YOW9c7hTCm1im6MxGH2LWgI_DoC16xk"}
+```
+
 - Listagem de Reservas: Use o endpoint api/reservas e passe parâmetros de filtro para as datas, se necessário.
 - Faturamento Mensal: Acesse o endpoint api/faturamento/mes para obter o faturamento
 
