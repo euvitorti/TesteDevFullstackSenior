@@ -1,7 +1,9 @@
 using DTOs.Reservation;
 using Enums;
 using GuiaMotel.Data;
+using Infra.Extensions; // Namespace da classe DateTimeExtensions
 using Models.Booking;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services.Reservations
 {
@@ -16,7 +18,6 @@ namespace Services.Reservations
 
         public async Task<ReservationResponseDTO> CreateReservationAsync(ReservationDTO reservationDto)
         {
-            // Buscar as entidades relacionadas...
             var user = await _context.Users.FindAsync(reservationDto.UserId);
             var suiteType = await _context.SuiteTypes.FindAsync(reservationDto.SuiteTypeId);
             var motel = await _context.Motels.FindAsync(reservationDto.MotelId);
@@ -26,9 +27,9 @@ namespace Services.Reservations
                 throw new KeyNotFoundException("User, Suite ou Motel não encontrado.");
             }
 
-            // Converte as datas para UTC (se já não estiverem definidas como tal)
-            var startDateUtc = DateTime.SpecifyKind(reservationDto.StartDate, DateTimeKind.Utc);
-            var endDateUtc = DateTime.SpecifyKind(reservationDto.EndDate, DateTimeKind.Utc);
+            // Utilize o método de extensão para converter para UTC
+            var startDateUtc = reservationDto.StartDate.ToUtc();
+            var endDateUtc = reservationDto.EndDate.ToUtc();
 
             var reservation = new Reservation
             {
@@ -44,17 +45,7 @@ namespace Services.Reservations
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
-            return new ReservationResponseDTO
-            {
-                Id = reservation.Id,
-                StartDate = reservation.StartDate,
-                EndDate = reservation.EndDate,
-                TotalAmount = reservation.TotalAmount,
-                UserId = reservation.UserId,
-                SuiteTypeId = reservation.SuiteTypeId,
-                MotelId = reservation.MotelId,
-                Status = reservation.Status
-            };
+            return MapReservationToResponseDTO(reservation);
         }
 
         public async Task<ReservationResponseDTO> GetReservationByIdAsync(int id)
@@ -66,6 +57,25 @@ namespace Services.Reservations
                 throw new KeyNotFoundException("Reserva não encontrada.");
             }
 
+            return MapReservationToResponseDTO(reservation);
+        }
+
+        public async Task<IEnumerable<ReservationResponseDTO>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            // Converte as datas para UTC usando o método de extensão, garantindo que os comparativos estejam corretos
+            startDate = startDate.ToUtc();
+            endDate = endDate.ToUtc();
+
+            var reservations = await _context.Reservations
+                .Where(r => r.StartDate >= startDate && r.EndDate <= endDate)
+                .ToListAsync();
+
+            return reservations.Select(r => MapReservationToResponseDTO(r)).ToList();
+        }
+
+        // Método privado para mapear uma entidade Reservation para ReservationResponseDTO
+        private ReservationResponseDTO MapReservationToResponseDTO(Reservation reservation)
+        {
             return new ReservationResponseDTO
             {
                 Id = reservation.Id,

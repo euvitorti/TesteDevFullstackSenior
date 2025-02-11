@@ -26,13 +26,11 @@ namespace Controller.Reservation
 
             try
             {
-                // Chama o serviço para criar a reserva
                 var reservation = await _reservationService.CreateReservationAsync(reservationDto);
 
                 if (reservation == null)
                     return BadRequest(new { message = "Dados incorretos." });
 
-                // Retorna a reserva criada com status 201 (Created)
                 return CreatedAtAction(nameof(GetReservationById), new { id = reservation.Id }, reservation);
             }
             catch (KeyNotFoundException ex)
@@ -57,6 +55,22 @@ namespace Controller.Reservation
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        // Novo endpoint para listar reservas filtradas por data
+        // Exemplo: GET /api/reservations/filter?startDate=2025-01-01&endDate=2025-01-31
+        [HttpGet("filter")]
+        public async Task<ActionResult<IEnumerable<ReservationResponseDTO>>> GetReservationsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            try
+            {
+                var reservations = await _reservationService.GetReservationsByDateRangeAsync(startDate, endDate);
+                return Ok(reservations);
             }
             catch (Exception ex)
             {

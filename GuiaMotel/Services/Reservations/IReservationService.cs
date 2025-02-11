@@ -6,5 +6,6 @@ namespace Services.Reservations
     {
         Task<ReservationResponseDTO> CreateReservationAsync(ReservationDTO reservationDto);
         Task<ReservationResponseDTO> GetReservationByIdAsync(int id);
+        Task<IEnumerable<ReservationResponseDTO>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }
