@@ -1,4 +1,3 @@
-
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOs.Reservation
@@ -23,5 +22,4 @@ namespace DTOs.Reservation
         [Required]
         public decimal TotalAmount { get; set; }
     }
-
 }

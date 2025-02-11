@@ -21,19 +21,19 @@ namespace Models.Booking
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }  // Propriedade do tipo User, agora pode ser null
+        public User? User { get; set; }
 
         // Relacionamento com o SuiteType
         public int SuiteTypeId { get; set; }
 
         [ForeignKey("SuiteTypeId")]
-        public Suite? SuiteType { get; set; }  // Propriedade do tipo SuiteType, agora pode ser null
+        public Suite? SuiteType { get; set; }
 
         // Relacionamento com o Motel
         public int MotelId { get; set; }
 
         [ForeignKey("MotelId")]
-        public Motel? Motel { get; set; }  // Propriedade do tipo Motel, agora pode ser null
+        public Motel? Motel { get; set; }
 
         public ReservationStatus Status { get; set; } = ReservationStatus.Pending;
     }

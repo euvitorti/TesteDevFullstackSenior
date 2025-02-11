@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Services.Authentication;
 using Services.Motels;
 using Services.SuiteTypes;
-using Services.Reservations; // Already registered for reservations
-using Services.Billing; // Import billing service
-using Infra.Config; // Import to access JwtConfig
+using Services.Reservations;
+using Services.Billing;
+using Infra.Swagger;
+using Infra.Config; // Import da configuração do JWT e Swagger
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,6 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 // Adicionar configuração do JWT
 builder.Services.AddJwtAuthentication(builder.Configuration);
-
 builder.Services.AddAuthorization(); // Garantir que o Authorization está registrado
 
 // Registrar os novos serviços para Motel e SuiteType
@@ -37,7 +37,10 @@ builder.Services.AddScoped<IBillingService, BillingService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Substitui a configuração simples pelo método que inclui o suporte ao JWT
+builder.Services.AddSwaggerDocumentation();
+
 builder.Services.AddMemoryCache();
 
 var app = builder.Build();
@@ -45,7 +48,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Guia Motel API V1");
+    });
 }
 
 app.UseAuthentication(); // Middleware de autenticação para validar o JWT
