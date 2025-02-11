@@ -70,31 +70,61 @@ O banco de dados PostgreSQL foi configurado no servidor Render. Utilizei migrati
 
 ## Teste a API
 
-1. **Cadastro de Usuário**
+1. **Cadastro, Login e Uso do Token**
 
-Primeiramente, é necessário cadastrar um usuário. Esse endpoint cria o usuário e retorna uma mensagem de sucesso.
-
-```
-  POST http://localhost:5000/api/user/register
-```
-
-2. **Requisição com cURL**
- 
-Utilize o comando curl abaixo (em uma única linha) para registrar um novo usuário. Certifique-se de enviar os campos UserName, Password e Email corretamente:
+Esta seção explica como registrar um usuário e fazer login para obter um token JWT que será usado para autenticar as próximas requisições. Para verificar os parâmetros e as rotas disponíveis, acesse a documentação completa via Swagger na URL:
 
 ```
-  curl -X POST http://localhost:5000/api/user/register -H "Content-Type: application/json" -d "{\"UserName\": \"adm\", \"Password\": \"adm\", \"Email\": \"adm@dominio.com\"}"    
+  http://localhost:5000/swagger/index.html
 ```
 
-3. **Resposta Esperada**
+2. Cadastre um Novo Usuário:
 
-Em caso de sucesso, a resposta deverá ser similar a:
+- No Swagger, localize a seção Users.
+- Clique em POST /api/user/register para expandir a rota de cadastro.
+- Clique no botão Try it out (canto superior direito da caixa da requisição).
+- No campo de exemplo que aparecer, preencha com os dados do usuário. Exemplo
 
 ```
   {
-    "message": "Usuário registrado com sucesso!"
+    "userName": "string",
+    "password": "string",
+    "email": "user@example.com"
   }
 ```
+
+Depois de preencher, clique em Execute para enviar a requisição. Verifique a resposta para confirmar que o cadastro foi realizado com sucesso.
+
+3. **Login**
+
+- No Swagger, localize a seção Authentication.
+- Encontre a rota POST /api/authentication/login.
+- Clique em Try it out.
+- Preencha os campos com o nome de usuário e senha cadastrados:
+
+```
+  {
+    "userName": "string",
+    "password": "string"
+  }
+```
+
+Clique em Execute e opie o token JWT que aparecerá na resposta. Ele será algo parecido com:
+
+```
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+4. **Adicione o Token para Acessar Rotas Protegidas**
+
+- No topo direito da página do Swagger, clique em Authorize.
+- Na janela que abrir, cole o token no seguinte formato:
+
+```
+  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+Clique em Authorize e depois em Close.
 
 4. **Realizar Login e Obter o Token**
 
@@ -104,21 +134,17 @@ Para acessar os endpoints protegidos da API, é necessário realizar o login e o
   POST http://localhost:5000/api/authentication/login
 ```
 
-5. **Exemplo de Requisição (cURL)**
+5. **Testando Outras Rotas Protegidas**
 
-Utilize o comando abaixo para efetuar o login. Certifique-se de substituir os valores seu_usuario e sua_senha pelos dados corretos do usuário cadastrado:
+- Agora você pode acessar rotas que exigem autenticação.
+- Escolha uma rota, clique em ➤ para expandir.
+- Clique em Try it out, preencha os parâmetros necessários e clique em Execute.
+- O Swagger enviará a requisição usando o token que você adicionou.
 
-```
-  curl -X POST http://localhost:5000/api/authentication/login -H "Content-Type: application/json" -d "{\"UserName\": \"seu_usuario\", \"Password\": \"sua_senha\"}"
-```
+6. **Dicas Extras**
 
-**Possíveis Respostas**: Login realizado com sucesso, retornando o token de acesso:
-
-```
-{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBnbWFpbC5jb20iLCJuYmYiOjE3MzkyNzAyNjMsImV4cCI6MTczOTI3Mzg2MywiaWF0IjoxNzM5MjcwMjYzfQ.iKS7u0VlNl85YOW9c7hTCm1im6MxGH2LWgI_DoC16xk"}
-```
-
-- Listagem de Reservas: Use o endpoint api/reservas e passe parâmetros de filtro para as datas, se necessário.
-- Faturamento Mensal: Acesse o endpoint api/faturamento/mes para obter o faturamento
+- Parâmetros de Requisição: O Swagger exibe claramente quais parâmetros são obrigatórios para cada rota.
+- Token Expirado: Se receber erro de autenticação, faça o login novamente para obter um novo token.
+- Sem Instalação: Todo o teste pode ser feito diretamente no Swagger, sem necessidade de ferramentas externas.
 
 A API estará disponível em http://localhost:5000.
