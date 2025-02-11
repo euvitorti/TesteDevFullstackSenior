@@ -66,11 +66,77 @@ O banco de dados PostgreSQL foi configurado no servidor Render. Utilizei migrati
   dotnet run
 ```
 
-7. Teste a API
-   
-- Cadastro de Usuário: Envie uma requisição POST para api/auth/register com o corpo contendo o nome, email e senha.
-- Login de Usuário: Envie uma requisição POST para api/auth/login com as credenciais. Receba o token JWT para usar nos endpoints protegidos.
-- Listagem de Reservas: Use o endpoint api/reservas e passe parâmetros de filtro para as datas, se necessário.
-- Faturamento Mensal: Acesse o endpoint api/faturamento/mes para obter o faturamento
+---
+
+## Teste a API
+
+1. **Cadastro, Login e Uso do Token**
+
+Esta seção explica como registrar um usuário e fazer login para obter um token JWT que será usado para autenticar as próximas requisições. Para verificar os parâmetros e as rotas disponíveis, acesse a documentação completa via Swagger na URL:
+
+```
+  http://localhost:5000/swagger/index.html
+```
+
+2. Cadastre um Novo Usuário:
+
+- No Swagger, localize a seção Users.
+- Clique em POST /api/user/register para expandir a rota de cadastro.
+- Clique no botão Try it out (canto superior direito da caixa da requisição).
+- No campo de exemplo que aparecer, preencha com os dados do usuário. Exemplo
+
+```
+  {
+    "userName": "string",
+    "password": "string",
+    "email": "user@example.com"
+  }
+```
+
+Depois de preencher, clique em Execute para enviar a requisição. Verifique a resposta para confirmar que o cadastro foi realizado com sucesso.
+
+3. **Login**
+
+- No Swagger, localize a seção Authentication.
+- Encontre a rota POST /api/authentication/login.
+- Clique em Try it out.
+- Preencha os campos com o nome de usuário e senha cadastrados:
+
+```
+  {
+    "userName": "string",
+    "password": "string"
+  }
+```
+
+Clique em Execute e opie o token JWT que aparecerá na resposta. Ele será algo parecido com:
+
+```
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+4. **Adicione o Token para Acessar Rotas Protegidas**
+
+- No topo direito da página do Swagger, clique em Authorize.
+- Na janela que abrir, cole o token no seguinte formato:
+
+```
+  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+Clique em Authorize e depois em Close.
+
+5. **Testando Outras Rotas Protegidas**
+
+- Agora você pode acessar rotas que exigem autenticação.
+- Escolha uma rota, clique em ➤ para expandir.
+- Clique em Try it out, preencha os parâmetros necessários e clique em Execute.
+- O Swagger enviará a requisição usando o token que você adicionou.
+
+6. **Dicas Extras**
+
+- Parâmetros de Requisição: O Swagger exibe claramente quais parâmetros são obrigatórios para cada rota.
+- Token Expirado: Se receber erro de autenticação, faça o login novamente para obter um novo token.
+- Sem Instalação: Todo o teste pode ser feito diretamente no Swagger, sem necessidade de ferramentas externas.
 
 A API estará disponível em http://localhost:5000.
