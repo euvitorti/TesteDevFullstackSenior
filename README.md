@@ -155,7 +155,7 @@ Exemplo: Criar uma nova reserva.
 
 2. **Cadastrar uma Suíte**
 
-- Após registrar o motel, crie uma suíte utilizando a rota POST /api/suiteTypes.
+- Após registrar o motel, crie uma suíte utilizando a rota POST /api/suites.
 - Anote o suiteTypeId retornado.
 
 3. **Criar uma nova reserva**
@@ -169,14 +169,13 @@ Preencha o corpo da requisição com os dados da reserva, conforme o exemplo aba
 
 ```
   {
-  "startDate": "2025-02-11T12:16:29.804Z",
-  "endDate": "2025-02-11T12:16:29.804Z",
-  "userId": 1,
-  "suiteTypeId": 1,
-  "motelId": 1,
-  "totalAmount": 100.50
-}
-
+    "startDate": "2025-02-11T12:16:29.804Z",
+    "endDate": "2025-02-11T12:16:29.804Z",
+    "userId": 1,
+    "suiteTypeId": 1,
+    "motelId": 1,
+    "totalAmount": 100.50
+  }
 ```
 
 ### Atenção!
