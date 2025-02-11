@@ -31,8 +31,8 @@ Durante o desenvolvimento, fui capaz de:
 - Backend: .NET Core
 - Banco de Dados: PostgreSQL (Modelo Relacional)
 - Autenticação: JWT
-- Cache: (Descrever a estratégia de cache implementada, se aplicável)
-- Ferramentas de Desenvolvimento: Visual Studio, Git
+- Cache
+- Ferramentas de Desenvolvimento: Visual Studio Code, Git
 
 ---
 
