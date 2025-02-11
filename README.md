@@ -34,6 +34,8 @@ Durante o desenvolvimento, fui capaz de:
 - Cache: (Descrever a estratégia de cache implementada, se aplicável)
 - Ferramentas de Desenvolvimento: Visual Studio, Git
 
+---
+
 ## Como Rodar o Projeto
 
 1. Clone este repositório:
