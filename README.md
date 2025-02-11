@@ -109,7 +109,7 @@ Depois de preencher, clique em Execute para enviar a requisição. Verifique a r
   }
 ```
 
-Clique em Execute e opie o token JWT que aparecerá na resposta. Ele será algo parecido com:
+Clique em Execute e copie o token JWT que aparecerá na resposta. Ele será algo parecido com:
 
 ```
   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
