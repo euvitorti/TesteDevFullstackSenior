@@ -126,14 +126,6 @@ Clique em Execute e opie o token JWT que aparecerá na resposta. Ele será algo 
 
 Clique em Authorize e depois em Close.
 
-4. **Realizar Login e Obter o Token**
-
-Para acessar os endpoints protegidos da API, é necessário realizar o login e obter um token de acesso. O login deve ser feito enviando os dados do usuário (UserName e Password) no corpo da requisição.
-
-```
-  POST http://localhost:5000/api/authentication/login
-```
-
 5. **Testando Outras Rotas Protegidas**
 
 - Agora você pode acessar rotas que exigem autenticação.
