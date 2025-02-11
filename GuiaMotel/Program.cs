@@ -4,8 +4,9 @@ using Services.Authentication;
 using Repository.Authentication;
 using Services.Motels;
 using Services.SuiteTypes;
-using Services.Reservations; // Adicionado para o IReservationService e ReservationService
-using Infra.Config; // Importar para acessar o JwtConfig
+using Services.Reservations; // Already registered for reservations
+using Services.Billing; // Import billing service
+using Infra.Config; // Import to access JwtConfig
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ builder.Services.AddScoped<ISuiteTypeService, SuiteTypeService>();
 
 // Registrar o serviço de Reservas
 builder.Services.AddScoped<IReservationService, ReservationService>();
+
+// Registrar o serviço de Faturamento (Billing)
+builder.Services.AddScoped<IBillingService, BillingService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
