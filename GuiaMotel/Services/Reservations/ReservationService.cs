@@ -4,16 +4,19 @@ using GuiaMotel.Data;
 using Infra.Extensions; // Namespace da classe DateTimeExtensions
 using Models.Booking;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory; // Importação do MemoryCache
 
 namespace Services.Reservations
 {
     public class ReservationService : IReservationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _cache; // Declaração do cache
 
-        public ReservationService(ApplicationDbContext context)
+        public ReservationService(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         public async Task<ReservationResponseDTO> CreateReservationAsync(ReservationDTO reservationDto)
@@ -45,6 +48,9 @@ namespace Services.Reservations
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
+            // Invalida o cache após criar uma nova reserva
+            _cache.Remove("all_reservations");
+
             return MapReservationToResponseDTO(reservation);
         }
 
@@ -66,11 +72,23 @@ namespace Services.Reservations
             startDate = startDate.ToUtc();
             endDate = endDate.ToUtc();
 
-            var reservations = await _context.Reservations
-                .Where(r => r.StartDate >= startDate && r.EndDate <= endDate)
-                .ToListAsync();
+            string cacheKey = $"reservations_{startDate:yyyyMMdd}_{endDate:yyyyMMdd}";
 
-            return reservations.Select(r => MapReservationToResponseDTO(r)).ToList();
+            if (!_cache.TryGetValue(cacheKey, out List<ReservationResponseDTO> cachedReservations))
+            {
+                var reservations = await _context.Reservations
+                    .Where(r => r.StartDate >= startDate && r.EndDate <= endDate)
+                    .ToListAsync();
+
+                cachedReservations = reservations.Select(r => MapReservationToResponseDTO(r)).ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
+                _cache.Set(cacheKey, cachedReservations, cacheOptions);
+            }
+
+            return cachedReservations;
         }
 
         // Método privado para mapear uma entidade Reservation para ReservationResponseDTO
