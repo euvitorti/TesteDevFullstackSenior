@@ -1,7 +1,6 @@
 using GuiaMotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Services.Authentication;
-using Repository.Authentication;
 using Services.Motels;
 using Services.SuiteTypes;
 using Services.Reservations; // Already registered for reservations

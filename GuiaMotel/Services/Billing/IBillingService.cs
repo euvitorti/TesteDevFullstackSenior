@@ -3,10 +3,15 @@ namespace Services.Billing
     public interface IBillingService
     {
         /// <summary>
-        /// Calculates the total revenue (sum of TotalAmount) for reservations within the specified month.
+        /// Calcula a receita total (soma do TotalAmount) para as reservas dentro do mês especificado.
         /// </summary>
-        /// <param name="referenceDate">Any date within the month to calculate revenue for. If not provided, the current month is used.</param>
-        /// <returns>Total revenue for the month.</returns>
-        Task<decimal> GetMonthlyRevenueAsync(DateTime referenceDate);
+        /// <param name="referenceDate">
+        /// Qualquer data dentro do mês para o qual a receita deve ser calculada.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// Token para cancelamento da operação assíncrona (opcional).
+        /// </param>
+        /// <returns>Receita total para o mês.</returns>
+        Task<decimal> GetMonthlyRevenueAsync(DateTime referenceDate, CancellationToken cancellationToken = default);
     }
 }

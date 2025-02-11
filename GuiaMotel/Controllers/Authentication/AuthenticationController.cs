@@ -1,6 +1,6 @@
 using DTOs.User;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Authentication;
+using Services.Authentication;
 
 namespace Controller.Authentication
 {

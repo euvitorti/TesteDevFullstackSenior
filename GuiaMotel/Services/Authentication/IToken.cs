@@ -1,6 +1,6 @@
 using GuiaMotel.Model;
 
-namespace Repository.Authentication
+namespace Services.Authentication
 {
     public interface ITokenService
     {

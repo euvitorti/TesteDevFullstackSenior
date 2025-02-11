@@ -21,13 +21,14 @@ namespace Services.Reservations
 
         public async Task<ReservationResponseDTO> CreateReservationAsync(ReservationDTO reservationDto)
         {
-            var user = await _context.Users.FindAsync(reservationDto.UserId);
-            var suiteType = await _context.SuiteTypes.FindAsync(reservationDto.SuiteTypeId);
-            var motel = await _context.Motels.FindAsync(reservationDto.MotelId);
+            // Busca as entidades de forma segura, prevenindo SQL Injection com EF Core
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == reservationDto.UserId);
+            var suiteType = await _context.SuiteTypes.AsNoTracking().FirstOrDefaultAsync(s => s.Id == reservationDto.SuiteTypeId);
+            var motel = await _context.Motels.AsNoTracking().FirstOrDefaultAsync(m => m.Id == reservationDto.MotelId);
 
             if (user == null || suiteType == null || motel == null)
             {
-                throw new KeyNotFoundException("User, Suite ou Motel não encontrado.");
+                throw new KeyNotFoundException("Usuário, Suíte ou Motel não encontrado.");
             }
 
             // Utilize o método de extensão para converter para UTC
@@ -56,7 +57,8 @@ namespace Services.Reservations
 
         public async Task<ReservationResponseDTO> GetReservationByIdAsync(int id)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
+            // Uso do AsNoTracking para melhorar a performance em consultas somente leitura
+            var reservation = await _context.Reservations.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
 
             if (reservation == null)
             {
@@ -74,14 +76,17 @@ namespace Services.Reservations
 
             string cacheKey = $"reservations_{startDate:yyyyMMdd}_{endDate:yyyyMMdd}";
 
+            // Verifica se os dados já estão em cache
             if (!_cache.TryGetValue(cacheKey, out List<ReservationResponseDTO> cachedReservations))
             {
-                var reservations = await _context.Reservations
+                // Consulta otimizada utilizando AsNoTracking para melhorar a performance
+                var reservations = await _context.Reservations.AsNoTracking()
                     .Where(r => r.StartDate >= startDate && r.EndDate <= endDate)
                     .ToListAsync();
 
                 cachedReservations = reservations.Select(r => MapReservationToResponseDTO(r)).ToList();
 
+                // Configuração do cache com expiração deslizante de 5 minutos
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(5));
 
