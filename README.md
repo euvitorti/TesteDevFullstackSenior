@@ -140,3 +140,49 @@ Clique em Authorize e depois em Close.
 - Sem Instalação: Todo o teste pode ser feito diretamente no Swagger, sem necessidade de ferramentas externas.
 
 A API estará disponível em http://localhost:5000.
+
+
+## Exemplo Prático de Requisição com Token
+
+Depois de obter o token, siga o passo a passo para fazer uma requisição protegida no Swagger.
+
+Exemplo: Criar uma nova reserva.
+
+1. **Cadastrar um Motel**.
+
+- Primeiro, registre um motel usando a rota POST /api/motels.
+- Após cadastrar, anote o motelId retornado.
+
+2. **Cadastrar uma Suíte**
+
+- Após registrar o motel, crie uma suíte utilizando a rota POST /api/suiteTypes.
+- Anote o suiteTypeId retornado.
+
+3. **Criar uma nova reserva**
+   
+- No swagger encontre a seção Reservations.
+- Encontre a rota POST /api/reservations.
+- Clique em ➤ para expandir a rota.
+- Clique em Try it out.
+
+Preencha o corpo da requisição com os dados da reserva, conforme o exemplo abaixo:
+
+```
+  {
+  "startDate": "2025-02-11T12:16:29.804Z",
+  "endDate": "2025-02-11T12:16:29.804Z",
+  "userId": 1,
+  "suiteTypeId": 1,
+  "motelId": 1,
+  "totalAmount": 100.50
+}
+
+```
+
+### Atenção!
+
+- startDate e endDate devem estar no formato ISO 8601, ou seja, YYYY-MM-DDTHH:MM:SS.MSZS.
+- userId, suiteTypeId e motelId devem ser os valores retornados nas rotas de cadastro do usuário, suíte e motel, respectivamente.
+- totalAmount é o valor total da reserva.
+
+Clique em Execute e a resposta mostrará os detalhes da reserva criada ou erros, se houver algum problema com os dados enviados.
