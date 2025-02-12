@@ -96,7 +96,7 @@ namespace GuiaMotel.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("Models.Models.Motel", b =>
+            modelBuilder.Entity("Models.Motels.Motel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +121,7 @@ namespace GuiaMotel.Migrations
                     b.ToTable("Motels");
                 });
 
-            modelBuilder.Entity("Suite.SuiteType", b =>
+            modelBuilder.Entity("Models.SuiteType.Suite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,13 +148,13 @@ namespace GuiaMotel.Migrations
 
             modelBuilder.Entity("Models.Booking.Reservation", b =>
                 {
-                    b.HasOne("Models.Models.Motel", "Motel")
+                    b.HasOne("Models.Motels.Motel", "Motel")
                         .WithMany("Reservations")
                         .HasForeignKey("MotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Suite.SuiteType", "SuiteType")
+                    b.HasOne("Models.SuiteType.Suite", "SuiteType")
                         .WithMany("Reservations")
                         .HasForeignKey("SuiteTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -173,9 +173,9 @@ namespace GuiaMotel.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Suite.SuiteType", b =>
+            modelBuilder.Entity("Models.SuiteType.Suite", b =>
                 {
-                    b.HasOne("Models.Models.Motel", "Motel")
+                    b.HasOne("Models.Motels.Motel", "Motel")
                         .WithMany("SuiteTypes")
                         .HasForeignKey("MotelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -189,14 +189,14 @@ namespace GuiaMotel.Migrations
                     b.Navigation("Reservations");
                 });
 
-            modelBuilder.Entity("Models.Models.Motel", b =>
+            modelBuilder.Entity("Models.Motels.Motel", b =>
                 {
                     b.Navigation("Reservations");
 
                     b.Navigation("SuiteTypes");
                 });
 
-            modelBuilder.Entity("Suite.SuiteType", b =>
+            modelBuilder.Entity("Models.SuiteType.Suite", b =>
                 {
                     b.Navigation("Reservations");
                 });
