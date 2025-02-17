@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GuiaMotel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5386ecf31708ac380d7307f201d72ce0b1a7ee09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e76833509406212220bd69ae5993c636c57b0d76")]
 [assembly: System.Reflection.AssemblyProductAttribute("GuiaMotel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GuiaMotel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
